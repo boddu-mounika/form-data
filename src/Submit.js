@@ -206,7 +206,7 @@ const Submit = (props) => {
       </Dialog>
 
       {state.tableData != undefined &&
-        state.tableData.length > 0 &&
+        state.tableData.length > 0 && 
         !state.showThankyouMessage(
           <React.Fragment>
             <h1>Here are your questions</h1>
