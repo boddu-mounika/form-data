@@ -1,0 +1,44 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplify4198ec3b5d684-staging-172802-authRole",
+      "UnauthRoleArn": "arn:aws:iam::351467191860:role/amplify-amplify4198ec3b5d684-staging-172802-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::351467191860:role/amplify-amplify4198ec3b5d684-staging-172802-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-amplify4198ec3b5d684-staging-172802-deployment",
+      "UnauthRoleName": "amplify-amplify4198ec3b5d684-staging-172802-unauthRole",
+      "StackName": "amplify-amplify4198ec3b5d684-staging-172802",
+      "StackId": "arn:aws:cloudformation:us-east-2:351467191860:stack/amplify-amplify4198ec3b5d684-staging-172802/f6800430-9e93-11ee-ba02-026fcb07ca07",
+      "AmplifyAppId": "d1rrqzqg8fxd0a"
+    },
+    "categories": {
+      "function": {
+        "getphonenumber": {},
+        "phonenumbercheck": {
+          "secretsPathAmplifyAppId": "d1rrqzqg8fxd0a",
+          "deploymentBucketName": "amplify-amplify4198ec3b5d684-staging-172802-deployment",
+          "s3Key": "amplify-builds/phonenumbercheck-6e462b783639564f7643-build.zip"
+        },
+        "getquestionsform": {
+          "secretsPathAmplifyAppId": "d1rrqzqg8fxd0a",
+          "deploymentBucketName": "amplify-amplify4198ec3b5d684-staging-172802-deployment",
+          "s3Key": "amplify-builds/getquestionsform-73576846666850744176-build.zip"
+        },
+        "updateresponses": {
+          "secretsPathAmplifyAppId": "d1rrqzqg8fxd0a",
+          "deploymentBucketName": "amplify-amplify4198ec3b5d684-staging-172802-deployment",
+          "s3Key": "amplify-builds/updateresponses-673171526b6a30324a46-build.zip"
+        },
+        "chatgptresponses": {
+          "secretsPathAmplifyAppId": "d1rrqzqg8fxd0a",
+          "chatgptPromptAnswer": "Convert this sentence to interogatory level response",
+          "deploymentBucketName": "amplify-amplify4198ec3b5d684-staging-172802-deployment",
+          "s3Key": "amplify-builds/chatgptresponses-596d646b6450524d4475-build.zip"
+        }
+      },
+      "api": {
+        "formapi": {}
+      }
+    }
+  }
+}

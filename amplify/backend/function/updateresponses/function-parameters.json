@@ -1,0 +1,7 @@
+{
+  "lambdaLayers": [],
+  "secretNames": [
+    "DB_USERNAME",
+    "DB_PASS"
+  ]
+}

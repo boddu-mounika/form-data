@@ -1,0 +1,14 @@
+{
+  "lambdaLayers": [],
+  "secretNames": [
+    "DB_USERNAME",
+    "DB_PASS",
+    "key"
+  ],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "chatgptPromptAnswer",
+      "environmentVariableName": "CHATGPT_PROMPT_ANSWER"
+    }
+  ]
+}

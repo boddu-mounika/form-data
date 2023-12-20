@@ -1,0 +1,174 @@
+{
+  "api": {
+    "formapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "phonenumbercheck"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getquestionsform"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "updateresponses"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "chatgptresponses"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "chatgptresponses": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getquestionsform": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "phonenumbercheck": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "updateresponses": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_chatgptresponses_chatgptPromptAnswer": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "chatgptresponses"
+        }
+      ]
+    },
+    "AMPLIFY_function_chatgptresponses_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "chatgptresponses"
+        }
+      ]
+    },
+    "AMPLIFY_function_chatgptresponses_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "chatgptresponses"
+        }
+      ]
+    },
+    "AMPLIFY_function_chatgptresponses_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "chatgptresponses"
+        }
+      ]
+    },
+    "AMPLIFY_function_getquestionsform_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getquestionsform"
+        }
+      ]
+    },
+    "AMPLIFY_function_getquestionsform_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getquestionsform"
+        }
+      ]
+    },
+    "AMPLIFY_function_getquestionsform_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getquestionsform"
+        }
+      ]
+    },
+    "AMPLIFY_function_phonenumbercheck_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "phonenumbercheck"
+        }
+      ]
+    },
+    "AMPLIFY_function_phonenumbercheck_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "phonenumbercheck"
+        }
+      ]
+    },
+    "AMPLIFY_function_phonenumbercheck_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "phonenumbercheck"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateresponses_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateresponses"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateresponses_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateresponses"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateresponses_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateresponses"
+        }
+      ]
+    }
+  }
+}
