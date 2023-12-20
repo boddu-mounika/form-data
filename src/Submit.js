@@ -162,7 +162,7 @@ const Submit = (props) => {
 
   return !state.isLoading ? (
     <React.Fragment>
-      <h1>This is submit form</h1>
+      
       <Dialog
         open={state.showDialog}
         TransitionComponent={Transition}
@@ -207,7 +207,7 @@ const Submit = (props) => {
 
       {state.tableData != undefined &&
         state.tableData.length > 0 && 
-        !state.showThankyouMessage(
+        !state.showThankyouMessage && (
           <React.Fragment>
             <h1>Here are your questions</h1>
             <ShowQuestions
@@ -223,7 +223,7 @@ const Submit = (props) => {
             </Button>
           </React.Fragment>
         )}
-      {showThankyouMessage && (
+      {state.showThankyouMessage && (
         <React.Fragment>
           <h1>Thank you for your responses!!!!</h1>
         </React.Fragment>

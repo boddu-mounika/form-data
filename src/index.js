@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import config from './aws-exports';
+import { Amplify } from 'aws-amplify';
 import { BrowserRouter } from 'react-router-dom'
 Amplify.configure(config);
 

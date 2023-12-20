@@ -22,8 +22,7 @@ function App() {
   // const [input, setInput] = useState("");
   // const [customers, setCustomers] = useState([]);
   return (
-    <div>  
-      <h1>Helloo</h1>    
+    <div>    
       <Routes>    
       <Route path="/" element={<LandingPage />} />    
         <Route exact path="/Submit/:key" element={<Submit />}/>
