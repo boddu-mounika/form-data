@@ -51,9 +51,10 @@ exports.handler =async (event) => {
         const request = new sql.Request();
         request.input("caseId", sql.NVarChar, id);  
       
-        const selectQuery =`select q.Id, q.SequenceNumber,q.MsgSentDateTime,  q.CaseId, q.MsgSent, q.MsgReceived, q.OriginalQuestion ,q.StandardQuestion,q.StandardAnswer as StandardAnswerWeb,  r.StandardAnswer, r.OriginalAnswer from questions q 
-        left outer join responses r on q.Id = r.QuestionId
-        where q.CaseId=@caseId order by q.SequenceNumber asc`;
+        const selectQuery =`select q.Id, q.SequenceNumber,q.MsgSentDateTime,  q.CaseId, q.MsgSent, q.MsgReceived, q.OriginalQuestion 
+        ,q.StandardQuestion,0 as IsModified,r.PiiInfo as PiiInfo,  r.StandardAnswer, r.OriginalAnswer from questions q 
+                left outer join Webresponses r on q.Id = r.QuestionId and r.IsActive=1
+                where q.CaseId=@caseId order by q.SequenceNumber asc`;
         request.query(selectQuery, (err, result) => {
           if (err) {
             reject(err);

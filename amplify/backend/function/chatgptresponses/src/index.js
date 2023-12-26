@@ -8,7 +8,7 @@ exports.handler = async (event) => {
   //const isQuestion = true;
   console.log(event.pathParameters.id);
   const caseId = event.pathParameters.id;
-  let questions=[];
+  let questions = [];
   const { Parameters } = await new aws.SSM()
     .getParameters({
       Names: ["DB_USERNAME", "DB_PASS", "key"].map(
@@ -41,9 +41,9 @@ exports.handler = async (event) => {
         const request = new sql.Request();
         request.input("caseId", sql.NVarChar, caseId);
 
-        const selectQuery = `select q.Id, q.SequenceNumber,q.MsgSentDateTime,  q.CaseId, q.MsgSent, q.MsgReceived, q.OriginalQuestion ,q.StandardQuestion,q.StandardAnswer as StandardAnswerWeb,  r.StandardAnswer, r.OriginalAnswer from questions q 
-        left outer join responses r on q.Id = r.QuestionId
-        where q.CaseId=@caseId order by q.SequenceNumber asc`;
+        const selectQuery = `select res.Id, res.CaseId,res.QuestionId,res.StandardAnswer,res.IsActive,res.HaspiiInfo 
+        from webresponses res where res.CaseId=@caseId and res.OriginalAnswer is null and 
+        res.StandardAnswer is not null`;
         request.query(selectQuery, (err, result) => {
           if (err) {
             reject(err);
@@ -62,21 +62,48 @@ exports.handler = async (event) => {
   //   })
   //   .promise();
 
-  console.log(`EVENT: ${JSON.stringify(event)}`);
+  //console.log(`EVENT: ${JSON.stringify(event)}`);
   let resp = "";
-  let prompt = "Who is presiden of India";
-  //console.log(prompt);
   try {
-    questions = await promise;
-    let filteredQuestions = questions.recordset.filter((row) => row.StandardAnswerWeb !== null);
+    const res = await promise;
+    questions = res.recordset;
+    //CHECK PII INFO FOR RESPONSES
+    console.log(questions);
+    let regex = "";
+    let patterns = [/^(?!(000|666|9))\d{3}-(?!00)\d{2}-(?!0000)\d{4}$/, /123/];
+    questions.forEach((item) => {
+      let PII = "";
+      let arr = item.StandardAnswer.split(" ");
+      for (let i = 0; i < arr.length; i++) {
+        let temp = arr[i];
+        for (let j = 0; j < patterns.length; j++) {
+          regex = patterns[j];
+          if (regex.test(temp) === true) {
+            PII = PII + "," + temp;
+          }
+        }
+      }
+      console.log(PII);
+      if (PII.length > 0) {
+        item.HaspiiInfo = 1;
+        item.OriginalAnswer = item.StandardAnswer;
+        item.PiiInfo = PII;
+      }
+    });
+    console.log(questions);
+    let filteredQuestions = questions.filter(
+      (row) => row.HaspiiInfo !== 1
+    );
+    console.log(filteredQuestions);
     //console.log(result.recordset);
     await Promise.all(
       filteredQuestions.map(async (element) => {
-        console.log(element.OriginalQuestion)
-        const chatgptPrompt =process.env.CHATGPT_PROMPT_ANSWER+":"+ element.StandardAnswerWeb;
-          // (isQuestion
-          //   ? process.env.CHATGPT_PROMPT
-          //   : process.env.CHATGPT_PROMPT_ANSWER) +":"+ element.OriginalQuestion;
+        //console.log(element.OriginalQuestion)
+        const chatgptPrompt =
+          process.env.CHATGPT_PROMPT_ANSWER + ":" + element.StandardAnswer;
+        // (isQuestion
+        //   ? process.env.CHATGPT_PROMPT
+        //   : process.env.CHATGPT_PROMPT_ANSWER) +":"+ element.OriginalQuestion;
         const res = await axios.post(
           `https://api.openai.com/v1/chat/completions`,
           {
@@ -105,7 +132,6 @@ exports.handler = async (event) => {
         console.log(element.OriginalAnswer);
       })
     );
-
 
     //console.log(result);
     //console.log(resp.data.choices[0].message.content);
@@ -150,29 +176,39 @@ exports.handler = async (event) => {
       const request = new sql.Request();
 
       // Define the table and column names
-      const tableName = "questions";
+      const tableName = "WebResponses";
       const idColumnName = "Id";
       const nameColumnName = "OriginalAnswer";
-      let tabledata = questions.recordset;
+      const piiColumnName = "HaspiiInfo"
+      const piiTextColumnName = "PiiInfo"
+      //let tabledata = questions.recordset;
       //const request = new sql.Request();
 
       // Generate bulk update query
       let query = `UPDATE ${tableName} SET ${nameColumnName} = CASE `;
       let params = [];
-      console.log(tabledata.filter((row) => row.OriginalAnswer !== null));
-      const filteredTableData = tabledata.filter(
-        (row) => row.OriginalAnswer !== null
-      );
-
-      filteredTableData.forEach((row) => {
-        console.log(row.StandardQuestion);
+      
+      questions.forEach((row) => {
+        //console.log(row.StandardQuestion);
         query += `WHEN ${idColumnName} = @id${row.Id} THEN @name${row.Id} `;
         request.input(`id${row.Id}`, sql.Int, row.Id);
         request.input(`name${row.Id}`, sql.NVarChar, row.OriginalAnswer);
+        request.input(`Haspii${row.Id}`, sql.Bit, row.HaspiiInfo);
+        request.input(`piitext${row.Id}`, sql.NVarChar, row.PiiInfo);
       });
+
+      query += `END, ${piiColumnName} = CASE `;
+      questions.forEach((row) => {
+        query += `WHEN ${idColumnName} = @id${row.Id} THEN @Haspii${row.Id} `;
+      });
+
+      query += `END, ${piiTextColumnName} = CASE `;
+      questions.forEach((row) => {
+        query += `WHEN ${idColumnName} = @id${row.Id} THEN @piitext${row.Id} `;
+      });
+
       query += `END WHERE ${idColumnName} IN (`;
-      query += filteredTableData.map((row) => `@id${row.Id}`)
-        .join(",");
+      query += questions.map((row) => `@id${row.Id}`).join(",");
       query += ")";
 
       console.log(query);

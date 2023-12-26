@@ -1,8 +1,8 @@
 const aws = require("aws-sdk");
 
 exports.handler = async (event) => {
-  console.log(`EVENT: ${JSON.stringify(event)}`);
-  
+  //console.log(`EVENT: ${JSON.stringify(event)}`);
+
   //const input = Buffer.from(event.body, "base64").toString("ascii");
   const input = event.body;
   const boundaryRegex = /^--([^\r\n]+)/;
@@ -27,7 +27,7 @@ exports.handler = async (event) => {
       }
     });
 
-    console.log(formdata);
+    //console.log(formdata);
   }
   const { Parameters } = await new aws.SSM()
     .getParameters({
@@ -52,43 +52,74 @@ exports.handler = async (event) => {
       },
     };
 
-    sql.connect(config).then((pool) => {
-      const request = new sql.Request();      
-      
+    sql.connect(config).then(async (pool) => {
+      try {
+        const transaction = new sql.Transaction(pool);
+        await transaction.begin();
 
-      // Define the table and column names
-      const tableName = "questions";
-      const idColumnName = "Id";
-      const nameColumnName = "StandardAnswer";
-      let tabledata = JSON.parse(formdata.data);
-      //const request = new sql.Request();
+        const tableName = "WebResponses";
+        const nameColumnName = "IsActive";
+        const idColumnName = "QuestionId";
+        const table = new sql.Table("WebResponses");
 
-      // Generate bulk update query
-      let query = `UPDATE ${tableName} SET ${nameColumnName} = CASE `;
-      let params = [];
-      console.log(tabledata.filter((row) => row.StandardAnswerWeb !== null));
-      const filteredTableData = tabledata.filter(
-        (row) => row.StandardAnswerWeb !== null
-      );
+        table.create = false;
+        table.columns.add("CaseId", sql.Int, { nullable: true });
+        table.columns.add("QuestionId", sql.Int, { nullable: true });
+        table.columns.add("StandardAnswer", sql.NVarChar(sql.MAX), {
+          nullable: true,
+        });
+        table.columns.add("IsActive", sql.Bit, { nullable: true });
+        table.columns.add("InsertedTimeStamp", sql.DateTime, {
+          nullable: true,
+        });
+        let tabledata = JSON.parse(formdata.data);
+        //CHANGE THIS BACK
+        // const filteredTableData = tabledata.filter(
+        //   (row) => row.StandardAnswerWeb !== null
+        // );
+        const filteredTableData = tabledata.filter((row) => row.IsModified === 1);
+        let updatequery = `UPDATE ${tableName} SET ${nameColumnName} = 0`;
+        updatequery += ` WHERE ${idColumnName} IN (`;
+        updatequery += filteredTableData
+          .map((row_1) => `${row_1.Id}`)
+          .join(",");
+        updatequery += ")";
+        console.log(updatequery);
 
-      filteredTableData.forEach((row) => {
-        console.log(row.StandardAnswerWeb);
-        query += `WHEN ${idColumnName} = @id${row.Id} THEN @name${row.Id} `;
-        request.input(`id${row.Id}`, sql.Int, row.Id);
-        request.input(`name${row.Id}`, sql.NVarChar, row.StandardAnswerWeb);
-      });
-      query += `END WHERE ${idColumnName} IN (`;
-      query += filteredTableData.map((row) => `@id${row.Id}`)
-        .join(",");
-      query += ")";
+        const currentDate = new Date();
 
-      console.log(query);
+        console.log(filteredTableData);
 
-      // Execute the bulk update query
-      const result = request.query(query);
-
-      //console.log(`Rows affected: ${result.rowsAffected}`);
-      resolve(result);
+        filteredTableData.forEach((row_2) => {
+          table.rows.add(
+            row_2.CaseId,
+            row_2.Id,
+            row_2.StandardAnswer,
+            1,
+            currentDate
+          );
+        });
+        let results;
+        console.log(table.rows);
+        try {
+          const request = new sql.Request(transaction);
+          const updateResults = await request.query(updatequery);
+          results = await request.bulk(table);
+          
+          await transaction.commit();
+          resolve(results);
+          console.log('Transaction committed successfully.');
+        } catch (error) {
+          await transaction.rollback();
+          reject(results);
+          console.error('Transaction rolled back due to error:', error);
+        } finally {
+          pool.close();
+        }
+      } catch (err_1) {
+        console.error(err_1);
+        reject(err_1);
+      }
     });
   });
 
@@ -117,3 +148,40 @@ exports.handler = async (event) => {
     };
   }
 };
+
+// const request = new sql.Request();
+
+// // Define the table and column names
+// const tableName = "questions";
+// const idColumnName = "Id";
+// const nameColumnName = "StandardAnswer";
+// let tabledata = JSON.parse(formdata.data);
+// //const request = new sql.Request();
+
+// // Generate bulk update query
+// let query = `UPDATE ${tableName} SET ${nameColumnName} = CASE `;
+// let params = [];
+// console.log(tabledata.filter((row) => row.StandardAnswerWeb !== null));
+// const filteredTableData = tabledata.filter(
+//   (row) => row.StandardAnswerWeb !== null
+// );
+
+// filteredTableData.forEach((row) => {
+//   console.log(row.StandardAnswerWeb);
+//   query += `WHEN ${idColumnName} = @id${row.Id} THEN @name${row.Id} `;
+//   request.input(`id${row.Id}`, sql.Int, row.Id);
+//   request.input(`name${row.Id}`, sql.NVarChar, row.StandardAnswerWeb);
+// });
+// query += `END WHERE ${idColumnName} IN (`;
+// query += filteredTableData.map((row) => `@id${row.Id}`)
+//   .join(",");
+// query += ")";
+
+// console.log(query);
+
+// // Execute the bulk update query
+// const result = request.query(query);
+
+// //console.log(`Rows affected: ${result.rowsAffected}`);
+// resolve(result);
+// });

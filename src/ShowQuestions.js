@@ -17,7 +17,7 @@ const ShowQuestions = (props) => {
             multiline
             rows={4}
             onChange={props.handleValueChange}
-            value = {question.StandardAnswerWeb?question.StandardAnswerWeb:""}
+            value = {question.StandardAnswer?question.StandardAnswer:""}
           />
         </div>
       ))}

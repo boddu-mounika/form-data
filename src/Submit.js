@@ -123,7 +123,7 @@ const Submit = (props) => {
   const handleValueChange = (e) => {
     const updatedQuestions = state.tableData.map((question) => {
       if (question.Id.toString() === e.target.name.toString()) {
-        return { ...question, StandardAnswerWeb: e.target.value };
+        return { ...question, StandardAnswer: e.target.value, IsModified:1 };
       }
       return question;
     });
