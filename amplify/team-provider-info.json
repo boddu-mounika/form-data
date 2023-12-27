@@ -27,7 +27,7 @@
         "updateresponses": {
           "secretsPathAmplifyAppId": "d1rrqzqg8fxd0a",
           "deploymentBucketName": "amplify-amplify4198ec3b5d684-staging-172802-deployment",
-          "s3Key": "amplify-builds/updateresponses-642b6665507262427157-build.zip"
+          "s3Key": "amplify-builds/updateresponses-522f6b493070564c5748-build.zip"
         },
         "chatgptresponses": {
           "secretsPathAmplifyAppId": "d1rrqzqg8fxd0a",

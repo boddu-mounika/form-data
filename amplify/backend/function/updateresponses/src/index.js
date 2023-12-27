@@ -72,6 +72,9 @@ exports.handler = async (event) => {
         table.columns.add("InsertedTimeStamp", sql.DateTime, {
           nullable: true,
         });
+        table.columns.add("Channel", sql.NVarChar, {
+          nullable: true,
+        });
         let tabledata = JSON.parse(formdata.data);
         //CHANGE THIS BACK
         // const filteredTableData = tabledata.filter(
@@ -96,7 +99,8 @@ exports.handler = async (event) => {
             row_2.Id,
             row_2.StandardAnswer,
             1,
-            currentDate
+            currentDate,
+            "Web"
           );
         });
         let results;
