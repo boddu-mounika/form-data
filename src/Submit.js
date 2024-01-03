@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import Checkbox from "@mui/material/Checkbox";
+import DialogActions from '@mui/material/DialogActions';
 import { API } from "aws-amplify";
 import {
   Button,
@@ -14,6 +16,11 @@ import {
 } from "@mui/material";
 import ShowQuestions from "./ShowQuestions";
 import Loading from "./ReusableComponents/Loading";
+import Typography from "@mui/material/Typography";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import "./App.css";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -34,8 +41,19 @@ const Submit = (props) => {
     isLoading: true,
     changesMade: false,
     showThankyouMessage: false,
+    consentChecked: false,
   };
   const [state, setState] = useState(initialState);
+
+  let consentText = (
+    <Typography variant="body2" display="block" gutterBottom>
+      By submitting this form, I confirm that all the answers provided above are
+      accurate and true to the best of my knowledge. I understand that any false
+      or misleading information may have legal consequences. I consent to the
+      collection and processing of my answers for the purpose of assisting the
+      attorney in collecting information based on this questionnaire.
+    </Typography>
+  );
 
   useEffect(() => {
     const path = "/phonenumbercheck";
@@ -64,6 +82,14 @@ const Submit = (props) => {
 
     getPhonenumber();
   }, []);
+
+  const scrollRef = useRef(null);
+  const handleScrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth',
+    });
+  };
 
   const handleChange = (e) => {
     let newState = { ...state };
@@ -123,11 +149,16 @@ const Submit = (props) => {
   const handleValueChange = (e) => {
     const updatedQuestions = state.tableData.map((question) => {
       if (question.Id.toString() === e.target.name.toString()) {
-        return { ...question, StandardAnswer: e.target.value, IsModified:1 };
+        return { ...question, StandardAnswer: e.target.value, IsModified: 1 };
       }
       return question;
     });
     setState({ ...state, tableData: updatedQuestions, changesMade: true });
+  };
+
+  const handleCheckBoxChange = () => {
+    let value = !state.consentChecked;
+    setState({ ...state, consentChecked: value });
   };
 
   const onSubmit = async () => {
@@ -161,8 +192,7 @@ const Submit = (props) => {
   };
 
   return !state.isLoading ? (
-    <React.Fragment>
-      
+    <div>
       <Dialog
         open={state.showDialog}
         TransitionComponent={Transition}
@@ -171,7 +201,7 @@ const Submit = (props) => {
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle>{"Confirm!"}</DialogTitle>
+        <DialogTitle>{"Validation"}</DialogTitle>
 
         <DialogContent>
           {!state.phoneNumberVerified && (
@@ -182,53 +212,91 @@ const Submit = (props) => {
               </DialogContentText>
             </React.Fragment>
           )}
-
+          {(state.phoneNumberVerified )&& (
+            <React.Fragment>
+            <DialogContentText id="alert-dialog-slide-description">
+            Please enter your 10 digit phone number associated with the case for validation
+            </DialogContentText>
+          </React.Fragment>
+          )}
           <React.Fragment>
             <TextField
               id="phoneNumber"
               name="phoneNumber"
-              label="Please enter your 10 digit phone number associated with the case for validation"
+              label="Phone Number"
               variant="outlined"
               onChange={handleChange}
               value={state.phoneNumber}
               style={{ width: "80%", marginTop: "10px" }}
             />
-            <Button
+           
+          </React.Fragment>
+        </DialogContent>
+        <DialogActions>
+        <Button
               variant="contained"
               onClick={checkPhoneNumber}
               disabled={state.phoneNumber.length !== 10}
               style={{ marginLeft: "10px", marginTop: "20px" }}
             >
-              Check
+              Validate
             </Button>
-          </React.Fragment>
-        </DialogContent>
+        </DialogActions>
       </Dialog>
 
       {state.tableData != undefined &&
-        state.tableData.length > 0 && 
+        state.tableData.length > 0 &&
         !state.showThankyouMessage && (
-          <React.Fragment>
-            <h1>Here are your questions</h1>
+          <div
+            style={{ marginLeft: "7%", marginRight: "7%" }}
+            className="scroll-to-bottom-container"
+          >
+            <div ref={scrollRef} />
+            <button
+              onClick={handleScrollToBottom}
+              className="button-with-arrow"
+            >
+              
+            </button>
+            <Typography
+              variant="h5"
+              style={{ color: "rgb(0, 0, 0)" }}
+              gutterBottom
+            >
+              Client Questionnaire
+            </Typography>
+            <Typography variant="overline" display="block" gutterBottom>
+              {key.substring(key.indexOf("-") + 1)}
+            </Typography>
             <ShowQuestions
               data={state.tableData}
               handleValueChange={handleValueChange}
             />
+
+            <FormControlLabel
+              value="top"
+              control={<Checkbox />}
+              onChange={handleCheckBoxChange}
+              checked={state.consentChecked}
+              label={consentText}
+              labelPlacement="end"
+            />
             <Button
               variant="contained"
               onClick={onSubmit}
-              disabled={!state.changesMade}
+              disabled={!state.changesMade || !state.consentChecked}
+              style={{ marginTop: "10px", marginBottom: "20px" }}
             >
               Submit responses
             </Button>
-          </React.Fragment>
+          </div>
         )}
       {state.showThankyouMessage && (
         <React.Fragment>
           <h1>Thank you for your responses!!!!</h1>
         </React.Fragment>
       )}
-    </React.Fragment>
+    </div>
   ) : (
     <Loading />
   );
