@@ -57,7 +57,6 @@
   .button-with-arrow::after {
     width: 5px;
     height: 5px;
-    margin-left: 2px;
   }
 }
 

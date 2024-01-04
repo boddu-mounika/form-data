@@ -260,7 +260,7 @@ const Submit = (props) => {
             </button>
             <Typography
               variant="h5"
-              style={{ color: "rgb(0, 0, 0)" }}
+              style={{ color: "rgb(0, 0, 0)", marginTop:"30px" }}
               gutterBottom
             >
               Client Questionnaire
@@ -280,6 +280,7 @@ const Submit = (props) => {
               checked={state.consentChecked}
               label={consentText}
               labelPlacement="end"
+              disabled={!state.changesMade}
             />
             <Button
               variant="contained"

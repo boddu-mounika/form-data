@@ -31,9 +31,9 @@
         },
         "chatgptresponses": {
           "secretsPathAmplifyAppId": "d1rrqzqg8fxd0a",
-          "chatgptPromptAnswer": "Convert this sentence to interogatory level response",
           "deploymentBucketName": "amplify-amplify4198ec3b5d684-staging-172802-deployment",
-          "s3Key": "amplify-builds/chatgptresponses-666e39676d6556732f39-build.zip"
+          "s3Key": "amplify-builds/chatgptresponses-386b4864456675735535-build.zip",
+          "chatgptPromptAnswer": "Convert this sentence to interogatory level response"
         }
       },
       "api": {
