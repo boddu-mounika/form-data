@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
-import DialogActions from '@mui/material/DialogActions';
+import DialogActions from "@mui/material/DialogActions";
 import { API } from "aws-amplify";
 import {
   Button,
@@ -87,7 +87,7 @@ const Submit = (props) => {
   const handleScrollToBottom = () => {
     window.scrollTo({
       top: document.documentElement.scrollHeight,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -212,12 +212,13 @@ const Submit = (props) => {
               </DialogContentText>
             </React.Fragment>
           )}
-          {(state.phoneNumberVerified )&& (
+          {state.phoneNumberVerified && (
             <React.Fragment>
-            <DialogContentText id="alert-dialog-slide-description">
-            Please enter your 10 digit phone number associated with the case for validation
-            </DialogContentText>
-          </React.Fragment>
+              <DialogContentText id="alert-dialog-slide-description">
+                Please enter your 10 digit phone number associated with the case
+                for validation
+              </DialogContentText>
+            </React.Fragment>
           )}
           <React.Fragment>
             <TextField
@@ -229,18 +230,17 @@ const Submit = (props) => {
               value={state.phoneNumber}
               style={{ width: "80%", marginTop: "10px" }}
             />
-           
           </React.Fragment>
         </DialogContent>
         <DialogActions>
-        <Button
-              variant="contained"
-              onClick={checkPhoneNumber}
-              disabled={state.phoneNumber.length !== 10}
-              style={{ marginLeft: "10px", marginTop: "20px" }}
-            >
-              Validate
-            </Button>
+          <Button
+            variant="contained"
+            onClick={checkPhoneNumber}
+            disabled={state.phoneNumber.length !== 10}
+            style={{ marginLeft: "10px", marginTop: "20px" }}
+          >
+            Validate
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -255,12 +255,10 @@ const Submit = (props) => {
             <button
               onClick={handleScrollToBottom}
               className="button-with-arrow"
-            >
-              
-            </button>
+            ></button>
             <Typography
               variant="h5"
-              style={{ color: "rgb(0, 0, 0)", marginTop:"30px" }}
+              style={{ color: "rgb(0, 0, 0)", marginTop: "30px" }}
               gutterBottom
             >
               Client Questionnaire
@@ -294,7 +292,9 @@ const Submit = (props) => {
         )}
       {state.showThankyouMessage && (
         <React.Fragment>
-          <h1>Thank you for your responses!!!!</h1>
+          <Typography variant="h6" gutterBottom>
+            Thank you for your responses!!!!
+          </Typography>
         </React.Fragment>
       )}
     </div>
