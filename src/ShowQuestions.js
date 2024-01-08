@@ -13,7 +13,7 @@ const ShowQuestions = (props) => {
             variant="subtitle1"
             gutterBottom
           >
-            {question.SequencNumber + ".) " + question.OriginalQuestion}
+            {question.SequenceNumber + ".) " + question.OriginalQuestion}
           </Typography>
           {/* <p>{question.StandardAnswerWeb}</p> */}
           <TextField

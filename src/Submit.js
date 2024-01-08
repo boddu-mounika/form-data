@@ -292,7 +292,7 @@ const Submit = (props) => {
         )}
       {state.showThankyouMessage && (
         <React.Fragment>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom align="center">
             Thank you for your responses!!!!
           </Typography>
         </React.Fragment>
