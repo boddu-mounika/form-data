@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.6">
   <diagram name="Page-1" id="JeuteiJrWNUM56fj1YCd">
-    <mxGraphModel dx="794" dy="454" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1034" dy="454" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <object label="" id="0">
           <mxCell />
@@ -39,7 +39,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="f4_67E3yVyobe0MgWhKP-13" value="Citi Single Sign on" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="110" y="30" width="110" height="40" as="geometry" />
+          <mxGeometry x="120" y="30" width="110" height="40" as="geometry" />
         </mxCell>
         <mxCell id="f4_67E3yVyobe0MgWhKP-14" value="UI" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="180" y="100" width="70" height="60" as="geometry" />
@@ -80,7 +80,7 @@
         <mxCell id="f4_67E3yVyobe0MgWhKP-33" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;gradientColor=#E6FFCC;" vertex="1" parent="1">
           <mxGeometry x="300" y="390" width="290" height="180" as="geometry" />
         </mxCell>
-        <mxCell id="f4_67E3yVyobe0MgWhKP-34" value="Interfacing System" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="f4_67E3yVyobe0MgWhKP-34" value="API&#39;s" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="310" y="390" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="f4_67E3yVyobe0MgWhKP-38" value="Email" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -101,8 +101,14 @@
             <mxPoint x="440" y="300" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="f4_67E3yVyobe0MgWhKP-60" value="Microsoft SQL Server" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
-          <mxGeometry x="150" y="310" width="60" height="80" as="geometry" />
+        <mxCell id="f4_67E3yVyobe0MgWhKP-60" value="Oracle DB 19.3.0.0.0" style="shape=mxgraph.veeam.3d.medium_datastore;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;sketch=0;shadow=0;dashed=0;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="145" y="290" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_67E3yVyobe0MgWhKP-69" value="" style="whiteSpace=wrap;html=1;aspect=fixed;rounded=1;dashed=1;fillColor=#E3E6FC;strokeColor=#6c8ebf;gradientDirection=north;gradientColor=#B5F0FF;" vertex="1" parent="1">
+          <mxGeometry x="650" y="50" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="f4_67E3yVyobe0MgWhKP-70" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#DF8C42;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam2.backup_from_storage_snapshots;" vertex="1" parent="1">
+          <mxGeometry x="740" y="110" width="50" height="54" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
